@@ -10,21 +10,14 @@ spring:
 
       routes:
         - id: question-service
-          uri: http://127.0.0.1:8081
+          uri: lb://QUESTION-SERVICE
           predicates:
             - Path=/question/**
 
         - id: quiz-service
-          uri: http://127.0.0.1:8090
+          uri: lb://QUIZ-SERVICE
           predicates:
             - Path=/quiz/**
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    fetch-registry: true
-    register-with-eureka: true
 
 server:
   port: 8765

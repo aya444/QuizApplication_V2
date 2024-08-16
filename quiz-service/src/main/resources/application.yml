@@ -2,10 +2,6 @@ spring:
   application:
     name: quiz-service
 
-  liquibase:
-    enabled: true
-    change-log: classpath:db.changelog/db.changelog-master.xml
-
   datasource:
     url: jdbc:postgresql://localhost:5432/quiz_db?useSSL=false
     username: postgres
@@ -20,10 +16,3 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   show-sql: true
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://127.0.0.1:8761/eureka/
-    fetch-registry: true
-    register-with-eureka: true
