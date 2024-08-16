@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "quiz")
+@Table(name = "quiz", schema = "quiz_schema")
 public class Quiz {
 
     @Id
@@ -25,6 +25,11 @@ public class Quiz {
     private String title;
 
     @ElementCollection
+    @CollectionTable(
+            name = "quiz_questions_ids",
+            schema = "quiz_schema",
+            joinColumns = @JoinColumn(name = "quiz_id")
+    )
+    @Column(name = "questions_ids")
     private List<Integer> questionsIds;
-
 }

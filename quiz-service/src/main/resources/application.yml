@@ -3,10 +3,11 @@ spring:
     name: quiz-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/quiz_db?useSSL=false
+    url: jdbc:postgresql://localhost:5432/quizapp_db?useSSL=false
     username: postgres
     password: Podman56
     driver-class-name: org.postgresql.Driver
+    schema: quiz_schema
 
   jpa:
     hibernate:
@@ -14,5 +15,4 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
-  show-sql: true
+    show-sql: true

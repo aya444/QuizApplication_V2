@@ -31,7 +31,6 @@ public class QuizController {
         return new ResponseEntity<>("Quiz was created successfully!", HttpStatus.CREATED);
     }
 
-
     @GetMapping("get/{id}")
     public ResponseEntity<List<QuestionOutputDto>> getQuizQuestionsById(@PathVariable @NotNull Integer id) {
         List<QuestionOutputDto> questions = quizService.getQuizQuestions(id);

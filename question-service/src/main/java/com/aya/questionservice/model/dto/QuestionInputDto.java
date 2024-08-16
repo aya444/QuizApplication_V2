@@ -31,5 +31,4 @@ public class QuestionInputDto {
 
     @NotBlank(message = "Category cannot be blank")
     private String category;
-
 }
