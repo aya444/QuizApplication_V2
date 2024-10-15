@@ -39,7 +39,7 @@ The project is designed to practice and enhance skills in:
 ## SQL Scripts
 1) Database Creation
 
-`CREATE DATABASE microservices_db;`
+`CREATE DATABASE quizapp_db;`
 
 2) Schema Creation
 
