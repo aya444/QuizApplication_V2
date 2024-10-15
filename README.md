@@ -48,12 +48,16 @@ CREATE SCHEMA question_schema;`
 
 3) Table Creation
 
-`CREATE TABLE question_schema.question (
-id SERIAL PRIMARY KEY,
-title VARCHAR(255) NOT NULL,
-category VARCHAR(255) NOT NULL,
-right_answer VARCHAR(255) NOT NULL
-);`
+`CREATE TABLE question ( 
+id SERIAL PRIMARY KEY, 
+category VARCHAR(255) NOT NULL, 
+difficulty_level VARCHAR(255) not null,
+question_title VARCHAR(255) NOT NULL, 
+option1 VARCHAR(255) not null,
+option2 VARCHAR(255) not null,
+option3 VARCHAR(255) not null,
+option4 VARCHAR(255) not null,
+right_answer VARCHAR(255) NOT null)`
 
 4) Insert Data <br>
 
