@@ -27,24 +27,6 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionMapper questionMapper = QuestionMapper.INSTANCE;
 
     @Override
-    public List<QuestionOutputDto> getAllQuestions() {
-        List<Question> questionList = questionRepo.findAllQuestionsSorted();
-        return questionList.stream()
-                .map(questionMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<QuestionOutputDto> getQuestionsByCategory(String category) {
-        List<Question> foundQuestionList = questionRepo.findByCategory(category);
-        if (foundQuestionList.isEmpty())
-            throw new ResultsNotFoundException("No questions found for category: " + category);
-        return foundQuestionList.stream()
-                .map(questionMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public QuestionOutputDto createQuestion(@Valid QuestionInputDto questionInputDto) {
         Optional.ofNullable(questionInputDto).orElseThrow(() -> new InvalidQuestionDataException("Question data cannot be null!"));
         Question questionEntity = questionMapper.fromDtoToEntity(questionInputDto);
@@ -73,6 +55,47 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
+//    @Override
+//    public List<QuestionOutputDto> getAllQuestions() {
+//        List<Question> questionList = questionRepo.findAllQuestionsSorted();
+//        return questionList.stream()
+//                .map(questionMapper::fromEntityToDto)
+//                .collect(Collectors.toList());
+//    }
+
+    @Override
+    public List<QuestionInputDto> getAllQuestions() {
+        List<Question> questionList = questionRepo.findAllQuestionsSorted();
+        return questionList.stream()
+                .map(questionMapper::fromEntityToInputDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<QuestionOutputDto> getQuestionsByCategory(String category) {
+        List<Question> foundQuestionList = questionRepo.findByCategory(category);
+        if (foundQuestionList.isEmpty())
+            throw new ResultsNotFoundException("No questions found for category: " + category);
+        return foundQuestionList.stream()
+                .map(questionMapper::fromEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public QuestionInputDto getQuestionById(Integer id) {
+        Question question = questionRepo.findById(id).orElseThrow(() -> new QuestionNotFoundException("No questions found for id: " + id));
+        return questionMapper.fromEntityToInputDto(question);
+    }
+
+    @Override
+    public List<QuestionOutputDto> getQuestionsById(List<Integer> questionIds) {
+        return questionIds.stream()
+                .map(id -> questionRepo.findById(id)
+                        .orElseThrow(() -> new QuestionNotFoundException("Question with id " + id + " not found")))
+                .map(questionMapper::fromEntityToDto)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public List<Integer> getQuestionsForQuiz(String category, Integer numOfQuestions) {
         if (numOfQuestions <= 0) {
@@ -87,17 +110,9 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionOutputDto> getQuestionsById(List<Integer> questionIds) {
-        return questionIds.stream()
-                .map(id -> questionRepo.findById(id)
-                        .orElseThrow(() -> new QuestionNotFoundException("Question with id " + id + " not found")))
-                .map(questionMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Integer calculateResults(List<Response> responseList) {
+    public String calculateResults(List<Response> responseList) {
         Integer result = 0;
+        Integer numOfQuestions = responseList.size();
 
         for (Response response : responseList) {
             Question question = questionRepo.findById(response.getId())
@@ -107,33 +122,7 @@ public class QuestionServiceImpl implements QuestionService {
                 result++;
             }
         }
-
-        return result;
+        return "" + result + "/" + numOfQuestions + "";
     }
-
-    // Batch Fetching (For Better Optimization)
-//    @Override
-//    public Integer calculateResults(List<Response> responseList) {
-//        // Extract All Question Ids from response List
-//        List<Integer> questionIds = responseList.stream()
-//                .map(Response::getId)
-//                .distinct()
-//                .collect(Collectors.toList());
-//
-//        // Fetch All questions with those Ids in one go: Batch Fetching (For Optimization)
-//        Map<Integer, Question> questionMap = questionRepo.findAllById(questionIds).stream()
-//                .collect(Collectors.toMap(Question::getId, Function.identity()));
-//
-//        Integer result = 0;
-//        for (Response response : responseList) {
-//            Question question = questionMap.get(response.getId());
-//            if (question == null)
-//                throw new QuestionNotFoundException("Question with id " + response.getId() + " not found");
-//
-//            if (question.getRightAnswer().equals(response.getResponse()))
-//                result++;
-//        }
-//        return result;
-//    }
 }
 

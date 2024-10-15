@@ -8,9 +8,6 @@ import com.aya.questionservice.model.entity.Response;
 import java.util.List;
 
 public interface QuestionService {
-    List<QuestionOutputDto> getAllQuestions();
-
-    List<QuestionOutputDto> getQuestionsByCategory(String category);
 
     QuestionOutputDto createQuestion(QuestionInputDto questionInputDto);
 
@@ -18,9 +15,15 @@ public interface QuestionService {
 
     void deleteQuestion(Integer id);
 
-    List<Integer> getQuestionsForQuiz(String category, Integer numOfQuestions);
+    List<QuestionInputDto> getAllQuestions();
+
+    List<QuestionOutputDto> getQuestionsByCategory(String category);
+
+    QuestionInputDto getQuestionById(Integer id);
 
     List<QuestionOutputDto> getQuestionsById(List<Integer> questionIds);
 
-    Integer calculateResults(List<Response> responseList);
+    List<Integer> getQuestionsForQuiz(String category, Integer numOfQuestions);
+
+    String calculateResults(List<Response> responseList);
 }

@@ -21,5 +21,5 @@ public interface QuizInterface {
     ResponseEntity<List<QuestionOutputDto>> getQuestionsById(@RequestBody List<Integer> questionIds);
 
     @PostMapping("question/get-results")
-    ResponseEntity<Integer> getResult(@RequestBody @Valid List<Response> responseList);
+    ResponseEntity<String> getResult(@RequestBody @Valid List<Response> responseList);
 }

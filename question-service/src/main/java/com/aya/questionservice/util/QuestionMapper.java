@@ -16,6 +16,8 @@ public interface QuestionMapper {
 
     Question fromDtoToEntity(QuestionInputDto questionInputDto);
 
+    QuestionInputDto fromEntityToInputDto(Question question);
+
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(@MappingTarget Question question, QuestionInputDto dto);
 }
